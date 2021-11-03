@@ -34,5 +34,6 @@ int main()
         lab_14_6();
         break;
     }
+    return 0;
 }
 
