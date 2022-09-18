@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+int N = 10; 
+class queue
+{
+private:
+	int* arr; //указатель на массив
+	int head; //переменная для начала очереди(головы)
+	int tail; //переменная для конца очереди(хвоста)
+public:
+	class Range // класс исключений для очереди
+	{ 
+	};
+	class Range1 
+	{ 
+	};
+	queue()
+	{
+		head = 0;
+		tail = 0;
+		arr = new int[N];
+	}
+	queue(int m)
+	{
+		head = 0;
+		tail = 0;
+		arr = new int[m];
+	}
+	~queue() //деструктор
+	{
+		delete[] arr;
+	}
+
+	void add_item(int a)
+	{
+		if (head == (tail + 1) % (N + 1)) //проверяем наличие места в очереди
+			throw Range(); // генерировать исключение
+		else
+		{
+			arr[tail] = a; //записываем значение в массив
+			tail = (tail + 1) % (N + 1); //присваиваем “хвосту” номер последнего эл
+		}
+	}
+	void extract_item()
+	{
+		if (head != tail)
+		{
+			cout << arr[head];
+			head = (head + 1) % (N + 1); //присваиваем “голове” номер следующего эл 
+		}
+		else
+		throw Range1(); // исключение	
+	}
+};
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+	int chislo;
+	bool odin; //логический тип данных для проверки лог. условий
+	cout << "Количество элементов в очереди: ";
+	cin >> N;
+	queue one(N);;
+	try
+	{ 
+		do {
+			cout << "Для добавление введите 1, для извлечения 0: ";
+			cin >> odin;
+			if (odin == 1)
+			{
+				cout << "Введите значение: ";
+				cin >> chislo;
+				one.add_item(chislo);
+			}
+			else
+			{
+				cout << "Значение равно: ";
+				one.extract_item();
+				cout << endl;
+			}
+		} while (true);
+	}
+	catch (queue::Range) //улавливающий блок (обработчик ошибок)
+	{
+		cout << "Очередь переполнена " << endl;
+	}
+	catch (queue::Range1)
+	{
+		cout << "Очередь пуста" << endl;
+	}
+	return 0;
+}
