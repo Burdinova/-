@@ -9,7 +9,7 @@ const int N = 5;
 struct progress {
 	string surname = ""; //Фамилия
 	int bank_account = 0; //номер счета
-	/*string*/ int amount /*= ""*/; //сумма на счёте
+    int amount ; //сумма на счёте
 	float date = 0; //дата последнего изменения (день)
 
 	int day;
@@ -21,12 +21,10 @@ class Prog {
 private:
 	progress arr[N] = {};
 	progress* P = arr;
-	
 	char slesh = '/';
-
 public:
-	//“Очистка” структурных переменных
-	void clear() {
+	void clear() //“Очистка” структурных переменных
+	{
 		int i;
 		cout << "Введите индекс для удаления данных: ";
 		cin >> i;
@@ -53,9 +51,7 @@ public:
 		cin >> P[i].amount;
 		cout << "Введите дату последнего изменения (дд/мм/гггг): ";
 		//cin >> P[i].date; 
-
 		cin >> P[i].day >> slesh >> P[i].month >> slesh >> P[i].year;
-
 		P[i].full = 1; //изменение заполненности структурной переменной
 	}
 	//Вывод элементов (полей) структуры на монитор
@@ -205,14 +201,6 @@ public:
 							}
 							else break;
 						}
-						//if (field == 3) 
-						//{
-						//	if (P[i].amount[j] == value[j]) 
-						//	{ //если буквы совпадают, счетчик увеличивается
-						//			match++;
-						//	}
-						//	else break;
-						//}
 					}
 				}if (match > prevmatch) { //если совпадений в данном блоке больше, чем в предыдущем, то большее совпадение переписывается
 						prevmatch = match; res = i; //присвоение индекса элемента с большим совпадением
@@ -306,70 +294,6 @@ public:
 			}
 			output(res);
 		}
-
-		//else if (valmin == 4) 
-		//{ 
-		//	//для поля 4
-		//	minint = P[0].year; //присвоение min значение первого элемента
-		//	for (int i = 1; i < N; i++) 
-		//	{
-		//		if (P[i].full == 1) 
-		//		{
-		//			fieminint = P[i].year; //сравнием мин и возможное мин значение
-		//			if (fieminint < minint) 
-		//			{ 
-		//			minint = fieminint;
-		//			//min = fiemin; 
-		//			//res = i; 
-		//			min_year = P[i].year; 
-		//			//cout << min_year;
-		//			/*break;*/ 
-		//			}
-		//			/*else break;*/
-		//		}
-		//	}
-		//	minint = P[0].month;
-		//	for (int i = 1; i < N; i++) {
-		//		if (P[i].full == 1) {
-		//			fieminint = P[i].month; 
-		//			if ((fieminint < minint) && (P[i].year == min_year)) 
-		//			{ 
-		//				//min = fiemin; res = i;
-		//				minint = fieminint;
-		//				min_month = P[i].month; /*break;*/ 
-		//			}
-		//			/*else break;*/
-		//		}
-		//	}
-		//	minint = P[0].day;
-		//	for (int i = 1; i < N; i++) 
-		//	{
-		//		if (P[i].full == 1) 
-		//		{
-		//			fieminint = P[i].day; //сравнием мин и возможное мин значение
-		//			if ((fieminint < minint) and (P[i].month == min_month) and (P[i].year == min_year))
-		//			{ //min = fiemin; 
-		//				minint = fieminint;
-		//				min_day = P[i].day;
-		//				//res = i; 
-		//			//output(res);
-		//			/*break; */
-		//			}
-		//			/*else break;*/
-		//		}
-		//	}
-		//	//for (int i = 0; i < N; i++)
-		//	//{
-		//	//	if (P[i].full == 1)
-		//	//	{
-		//	//		if ((P[i].day == min_day) && (P[i].month == min_month) && (P[i].year == min_year))
-		//	//		{
-		//	//			res = i;
-		//	//			output(res);
-		//	//		}
-		//	//	}
-		//	//}
-		//}
 		else if (valmin == 3) { //для поля 2
 			minint = P[0].amount; //присвоение min значение первого элемента
 			for (int i = 1; i < N; i++) {
@@ -404,18 +328,6 @@ public:
 					}
 				}
 			}
-			//if (valmin == 3) { //для поля 3
-			//	min = P[0].amount; //присвоение min значение первого элемента
-			//	for (int i = 1; i < N; i++) {
-			//		if (P[i].full == 1) {
-			//			for (int j = 0; j < min.length(); j++) { //сравниваем все буквы
-			//				fiemin = P[i].amount; //сравнием мин и возможное мин значение
-			//				if (fiemin[j] < min[j]) { min = fiemin; res = i; break; }
-			//				else break;
-			//			}
-			//		}
-			//	}
-			//}
 		}
 		//cout << res << endl; 
 		//output(res);
@@ -457,28 +369,28 @@ public:
 			}
 	}
 	//Функция чтения файла с содержимым базы данных (массива структурных элементов)
-	void readfile() {
-		ifstream rfile;
-		//string s;
+	void readfile() 
+	{
+		ifstream rfile(" text.txt", ios::in);
 		int i = 0; 
-		rfile.open("‪D:\\1.txt"); //открытие файла
-		while (rfile >> P[i].surname >> P[i].bank_account >> P[i].amount >> P[i].date) 
-		{ //чтение из файла
-			//cout << "ghfh";
-				P[i].full = 1; i++;
-		} rfile.close();
+		while (rfile >> P[i].surname >> P[i].bank_account >> P[i].amount >> P[i].day >> slesh >> P[i].month>> slesh >> P[i].year)
+		{
+				P[i].full = 1; 
+				i++;
+		} 
+		rfile.close();
 	}
 	//Функция записи в файл содержимого базы данных (массива структурных элементов).
 	void writefile() 
 	{
-		ofstream wfile; 
-		wfile.open("‪D:\\1.txt"); //открытие файла
-		for (int i = 0; i < N; i++) {
-			if (P[i].full == 1) {
-				//wfile << "dfdf" << endl;
-				wfile << P[i].surname << " " << P[i].bank_account << " " << P[i].amount << " " <<P[i].date << endl; //запись в файл
+		ofstream wfile (" text.txt", ios::app); //возможно нужно out
+			for (int i = 0; i < N; i++) 
+			{
+				if (P[i].full == 1)   
+				{
+					wfile << P[i].surname << " " << P[i].bank_account << " " << P[i].amount << " " << P[i].day << slesh << P[i].month << slesh << P[i].year << endl; //запись в файл
+				}
 			}
-		}
 		wfile.close();
 	}
 };
