@@ -9,12 +9,9 @@ const int N = 5;
 struct progress {
 	string surname = ""; //Фамилия
 	int bank_account = 0; //номер счета
-    int amount ; //сумма на счёте
-	int date = 0; //дата последнего изменения (день)
+	int amount; //сумма на счёте
+	string date = ""; //дата последнего изменения (день)
 
-	int day;
-    int month;
-    int year;
 	bool full = 0; //Заполненность ячейки
 };
 class Prog {
@@ -49,9 +46,9 @@ public:
 		cin >> P[i].bank_account;
 		cout << "Введите сумму на счёте: ";
 		cin >> P[i].amount;
-		cout << "Введите дату последнего изменения (дд/мм/гггг): ";
-		//cin >> P[i].date; 
-		cin >> P[i].day >> slesh >> P[i].month >> slesh >> P[i].year;
+		cout << "Введите дату последнего изменения (ггггммдд): ";
+		cin >> P[i].date; 
+		//cin >> P[i].day >> slesh >> P[i].month >> slesh >> P[i].year;
 
 		P[i].full = 1; //изменение заполненности структурной переменной
 	}
@@ -61,8 +58,8 @@ public:
 			cout << "Фамилия: " << P[i].surname << endl;
 			cout << "Номер счёта: " << P[i].bank_account << endl;
 			cout << "Сумма на счёте: " << P[i].amount << endl;
-			//cout << "Дата последнего изменения: " << P[i].date << endl;
-			cout << "Дата последнего изменения: " << P[i].day <<"." << P[i].month <<"."<< P[i].year << endl;
+			cout << "Дата последнего изменения: " << P[i].date << endl;
+			//cout << "Дата последнего изменения: " << P[i].day << "." << P[i].month << "." << P[i].year << endl;
 		}
 	}
 	//Вывод на экран всех заполненных элементов массива структур
@@ -75,81 +72,16 @@ public:
 		int intFromString, difference;
 		int max = INT_MAX; //просто большое число 2 147 483 647
 		int prevmatch = 0;
-		int res = -1; 
-		if (field == 4) //найти по году
-		{
-			intFromString = stof(value); //перевод строкового значения в численное
-			for (int i = 0; i < N; i++) {
-				if (P[i].full == 1) {
-					difference = abs(intFromString - P[i].year);
-					//вычисление разности с введенным элементом
-					if (difference < max) {
-						max = difference; //замена индекса элемента с минимальным значением
-					}
-				}
-
-			} 
-			for (int i = 0; i < N; i++) {
-				if (P[i].full == 1) {
-					if (abs(intFromString - P[i].year) == max) {
-						res = i;
-						output(res);
-					}
-				}
-			}
-		}
-		else if (field == 5) //найти по месяцу
-		{
-			intFromString = stof(value); //перевод строкового значения в численное
-			for (int i = 0; i < N; i++) {
-				if (P[i].full == 1) {
-					difference = abs(intFromString - P[i].month);
-					//вычисление разности с введенным элементом
-					if (difference < max) {
-						max = difference; //замена индекса элемента с минимальным значением
-						res = i;
-					}
-				}
-			} for (int i = 0; i < N; i++) {
-				if (P[i].full == 1) {
-					if (abs(intFromString - P[i].month) == max) {
-						res = i;
-						output(res);
-					}
-				}
-			}
-		}
-				else if (field == 6) //найти по дню
-				{
-					intFromString = stof(value); //перевод строкового значения в численное
-					for (int i = 0; i < N; i++) {
-						if (P[i].full == 1) {
-							difference = abs(intFromString - P[i].day);
-							//вычисление разности с введенным элементом
-							if (difference < max) {
-								max = difference; //замена индекса элемента с минимальным значением
-								res = i;
-							}
-						}
-					}
-					for (int i = 0; i < N; i++) {
-						if (P[i].full == 1) {
-							if (abs(intFromString - P[i].day) == max) {
-								res = i;
-								output(res);
-							}
-						}
-					}
-				}
-		else if (field == 2) {
+		int res = -1;
+		if (field == 2) {
 			intFromString = stof(value); //перевод строкового значения в численное
 			for (int i = 0; i < N; i++) {
 				if (P[i].full == 1) {
 					difference = abs(intFromString - P[i].bank_account);
 					//вычисление разности с введенным элементом
 					if (difference < max) { //замена индекса элемента с минимальным значением
-							max = difference; 
-							res = i;
+						max = difference;
+						res = i;
 					}
 				}
 			}
@@ -163,7 +95,7 @@ public:
 			}
 		}
 
-		 else if (field == 3)
+		else if (field == 3)
 		{
 			intFromString = stof(value); //перевод строкового значения в численное
 			for (int i = 0; i < N; i++) {
@@ -185,40 +117,111 @@ public:
 				}
 			}
 		}
-
-
-
-		else {
-			for (int i = 0; i < N; i++) 
+		else if (field == 1)
+		{
+			for (int i = 0; i < N; i++)
 			{
-				int match = 0; if (P[i].full == 1) 
+				int match = 0; if (P[i].full == 1)
 				{
-					for (int j = 0; j < value.length(); j++) 
+					for (int j = 0; j < value.length(); j++)
 					{ //сравнение строк по буквам
 						if (field == 1) {
-							if (P[i].surname[j] == value[j]) 
+							if (P[i].surname[j] == value[j])
 							{ //если буквы совпадают, счетчик увеличивается
-									match++;
+								match++;
 							}
 							else break;
 						}
 					}
 				}if (match > prevmatch) { //если совпадений в данном блоке больше, чем в предыдущем, то большее совпадение переписывается
-						prevmatch = match; res = i; //присвоение индекса элемента с большим совпадением
+					prevmatch = match; res = i; //присвоение индекса элемента с большим совпадением
 				}
+
 			}
-			if (res > -1) { //проверка на наличие совпадений
-				output(res);
+			if (res > -1) {//проверка на наличие совпадений
+				for (int i = 0; i < N; i++) {
+					if (P[i].full == 1) {
+						if (P[i].surname == P[res].surname)
+						{
+							output(i);
+						}
+					}
+				}
 			}
 			else cout << "Нет похожих значений" << endl;
 		}
+		else if (field == 4)
+		{
+			for (int i = 0; i < N; i++)
+			{
+				int match = 0; if (P[i].full == 1)
+				{
+					for (int j = 0; j < value.length(); j++)
+					{
+							if (P[i].date[j] == value[j]) { //если буквы совпадают, счетчик увеличивается
+								match++;
+							}
+							else break;
+					}
+				}if (match > prevmatch) { //если совпадений в данном блоке больше, чем в предыдущем, то большее совпадение переписывается
+					prevmatch = match; res = i; //присвоение индекса элемента с большим совпадением
+				}
+			}
+			if (res > -1) {//проверка на наличие совпадений
+				for (int i = 0; i < N; i++) {
+					if (P[i].full == 1) {
+						if (P[i].date == P[res].date) 
+						{
+							output(i);
+						}
+					}
+				}
+			}
+			else cout << "Нет похожих значений" << endl;
+		}
+
+		//else {
+		//	for (int i = 0; i < N; i++)
+		//	{
+		//		int match = 0; if (P[i].full == 1)
+		//		{
+		//			for (int j = 0; j < value.length(); j++)
+		//			{ //сравнение строк по буквам
+		//				if (field == 1) {
+		//					if (P[i].surname[j] == value[j])
+		//					{ //если буквы совпадают, счетчик увеличивается
+		//						match++;
+		//					}
+		//					else break;
+		//				}
+		//				if (field == 4) {
+		//					if (P[i].date[j] == value[j]) { //если буквы совпадают, счетчик увеличивается
+		//							match++;
+		//					}
+		//					else break;
+		//				}
+
+		//			}
+		//		}if (match > prevmatch) { //если совпадений в данном блоке больше, чем в предыдущем, то большее совпадение переписывается
+		//			prevmatch = match; res = i; //присвоение индекса элемента с большим совпадением
+		//		}
+
+		//	}
+
+		//	if (res > -1) {//проверка на наличие совпадений
+
+
+		//		output(res);
+		//	}
+		//	else cout << "Нет похожих значений" << endl;
+		//}
 	}
 	//Поиск в массиве структуры с минимальным значением заданного поля
-	void searchmin(int valmin) 
+	void searchmin(int valmin)
 	{
-		string min, fiemin; int res = 0; int minint, fieminint, min_year=0, min_month=0, min_day=0;
+		string min, fiemin; int res = 0; int minint, fieminint;
 
-		if (valmin == 2) 
+		if (valmin == 2)
 		{ //для поля 2
 			minint = P[0].bank_account; //присвоение min значение первого элемента
 			for (int i = 1; i < N; i++)
@@ -226,7 +229,7 @@ public:
 				if (P[i].full == 1)
 				{
 					fieminint = P[i].bank_account; //сравнием мин и возможное мин значение
-					if (fieminint < minint) 
+					if (fieminint < minint)
 					{
 						minint = fieminint;
 						//min = fiemin; 
@@ -240,7 +243,7 @@ public:
 			{
 				if (P[i].full == 1)
 				{
-					fieminint = P[i].bank_account; 
+					fieminint = P[i].bank_account;
 					if (fieminint == minint)
 					{
 						res = i;
@@ -248,52 +251,6 @@ public:
 					}
 				}
 			}
-
-		}
-		else if (valmin == 4)
-		{ //для поля 4
-			minint = P[0].year; //присвоение min значение первого элемента
-			for (int i = 1; i < N; i++) {
-				if (P[i].full == 1) {
-					fieminint = P[i].year; //сравнием мин и возможное мин значение
-					if (fieminint < minint)
-					{
-						min = fiemin;
-						res = i;
-						min_year = P[i].year;
-						break;
-					}
-					else break;
-				}
-			}
-			minint = P[0].month;
-			for (int i = 1; i < N; i++) {
-				if (P[i].full == 1) {
-					fieminint = P[i].month; //сравнием мин и возможное мин значение
-					if ((fieminint < minint) and (P[i].year == min_year)) 
-					{ 
-						min = fiemin; res = i; min_month = P[i].month; break; 
-					}
-					else break;
-				}
-			}
-			minint = P[0].day;
-			for (int i = 1; i < N; i++) 
-			{
-				if (P[i].full == 1) {
-					fieminint = P[i].day; //сравнием мин и возможное мин значение
-					if ((fieminint < minint) and (P[i].month == min_month) and (P[i].year == min_year))
-					{ 
-						min = fiemin; res = i; 
-						
-						break; 
-					}
-					
-					else break;
-					
-				}
-			}
-			output(res);
 		}
 		else if (valmin == 3) { //для поля 2
 			minint = P[0].amount; //присвоение min значение первого элемента
@@ -302,13 +259,14 @@ public:
 					fieminint = P[i].amount; //сравнием мин и возможное мин значение
 					if (fieminint < minint) {
 						//minint = fieminint;
-						min = fiemin; 					}
+						min = fiemin;
+					}
 				}
 			}
 			for (int i = 0; i < N; i++) {
 				if (P[i].full == 1) {
-					fieminint = P[i].amount; 
-					if (fieminint == minint) 
+					fieminint = P[i].amount;
+					if (fieminint == minint)
 					{
 						res = i;
 						output(res);
@@ -328,10 +286,26 @@ public:
 						}
 					}
 				}
+				cout << res << endl;
+				output(res);
+			}
+			if (valmin == 4) { //для поля 4
+				min = P[0].date; //присвоение min значение первого элемента
+				for (int i = 1; i < N; i++) {
+					if (P[i].full == 1) {
+						for (int j = 0; j < min.length(); j++) { //сравниваем все буквы
+							fiemin = P[i].date; //сравнием мин и возможное мин значение
+							if (fiemin[j] < min[j]) { min = fiemin; res = i; break; }
+							else break;
+						}
+					}
+				}
+				cout << res << endl;
+				output(res);
 			}
 		}
-		//cout << res << endl; 
-		//output(res);
+		/*cout << res << endl; 
+		output(res);*/
 	}
 	//Сортировка массива структур в порядке возрастания заданного поля
 	void up(int num) {
@@ -370,28 +344,28 @@ public:
 			}
 	}
 	//Функция чтения файла с содержимым базы данных (массива структурных элементов)
-	void readfile() 
+	void readfile()
 	{
 		ifstream rfile(" text.txt", ios::in);
-		int i = 0; 
-		while (rfile >> P[i].surname >> P[i].bank_account >> P[i].amount >> P[i].day >> slesh >> P[i].month>> slesh >> P[i].year)
+		int i = 0;
+		while (rfile >> P[i].surname >> P[i].bank_account >> P[i].amount >> P[i].date)
 		{
-				P[i].full = 1; 
-				i++;
-		} 
+			P[i].full = 1;
+			i++;
+		}
 		rfile.close();
 	}
 	//Функция записи в файл содержимого базы данных (массива структурных элементов).
-	void writefile() 
+	void writefile()
 	{
-		ofstream wfile (" text.txt", ios::app); //возможно нужно out
-			for (int i = 0; i < N; i++) 
+		ofstream wfile(" text.txt", ios::out); //возможно нужно app
+		for (int i = 0; i < N; i++)
+		{
+			if (P[i].full == 1)
 			{
-				if (P[i].full == 1)   
-				{
-					wfile << P[i].surname << " " << P[i].bank_account << " " << P[i].amount << " " << P[i].day << slesh << P[i].month << slesh << P[i].year << endl; //запись в файл
-				}
+				wfile << P[i].surname << " " << P[i].bank_account << " " << P[i].amount << " " << P[i].date << endl; //запись в файл
 			}
+		}
 		wfile.close();
 	}
 };
@@ -423,24 +397,24 @@ int main() {
 			cin >> c;
 			if (c == 1) {
 				int obj;
-				cout << "По какому полю искать? (1 - Фамилия, 2 - Номер счёта, 3 - Сумма на счёте, 4 - год последнего изменения, 5 - месяц последнего изменения, 6 - день последнего изменения) ";
-					cin >> obj; cout << "Введите значение: ";
+				cout << "По какому полю искать? (1 - Фамилия, 2 - Номер счёта, 3 - Сумма на счёте, 4 - дата последнего изменения) ";
+				cin >> obj; cout << "Введите значение: ";
 				cin >> str; num.searchelement(obj, str);
 			}
 			else if (c == 2) {
 				int objmin;
 				cout << "По какому полю искать? (1 - Фамилия, 2 - Номер счёта, 3 - Сумма на счёте, 4 - дата последнего изменения) ";
-					cin >> objmin; num.searchmin(objmin);
+				cin >> objmin; num.searchmin(objmin);
 			} break;
 		case 4: cout << "1 - Cортирвока по возрастанию\n2 - Cортировка по убыванию\n";
 			cin >> c;
 			if (c == 1) {
 				int objup; cout << "По какому полю сортировать? (1 - Фамилия, 2 - Номер счёта, 3 - Сумма на счёте, 4 - дата последнего изменения) ";
-					cin >> objup; num.up(objup); num.showall();
+				cin >> objup; num.up(objup); num.showall();
 			}
 			else if (c == 2) {
 				int objdown; cout << "По какому полю сортировать? (1 - Фамилия, 2 - Номер счёта, 3 - Сумма на счёте, 4 - дата последнего изменения) ";
-					cin >> objdown; num.down(objdown); num.showall();
+				cin >> objdown; num.down(objdown); num.showall();
 			} break;
 		case 5: cout << "1 - Чтение из файла\n2 - Запись в файл\n";
 			cin >> c;
