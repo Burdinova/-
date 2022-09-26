@@ -10,7 +10,7 @@ struct progress {
 	string surname = ""; //Фамилия
 	int bank_account = 0; //номер счета
     int amount ; //сумма на счёте
-	float date = 0; //дата последнего изменения (день)
+	int date = 0; //дата последнего изменения (день)
 
 	int day;
     int month;
@@ -52,6 +52,7 @@ public:
 		cout << "Введите дату последнего изменения (дд/мм/гггг): ";
 		//cin >> P[i].date; 
 		cin >> P[i].day >> slesh >> P[i].month >> slesh >> P[i].year;
+
 		P[i].full = 1; //изменение заполненности структурной переменной
 	}
 	//Вывод элементов (полей) структуры на монитор
