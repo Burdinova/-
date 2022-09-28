@@ -19,6 +19,7 @@ private:
 	progress arr[N] = {};
 	progress* P = arr;
 	char slesh = '/';
+	int dataBaseSize;
 public:
 	void clear() //“Очистка” структурных переменных
 	{
