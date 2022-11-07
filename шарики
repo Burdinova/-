@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class lira6_1 : MonoBehaviour
+{
+    public GameObject Obj11;
+    public GameObject Obj2;
+    public float time, Mass1, Mass2, Speed1, Speed2, sp1, sp2;
+    private float XXX = 1, XPosObj1, YPosObj1, ZPosObj1;
+    private float XPosObj2, YPosObj2, ZPosObj2;
+    private float XPosObj1_1, XPosObj2_1;
+    void Start()
+    {
+        Obj11.GetComponent<Rigidbody>().mass = Mass1;
+        Obj2.GetComponent<Rigidbody>().mass = Mass2;
+        XPosObj1 = Obj11.transform.position.x;
+        YPosObj1 = Obj11.transform.position.y;
+        ZPosObj1 = Obj11.transform.position.z;
+        XPosObj2 = Obj2.transform.position.x;
+        ZPosObj2 = Obj2.transform.position.z;
+        YPosObj2 = Obj2.transform.position.y;
+    }
+    void FixedUpdate()
+    {
+        time = Time.timeSinceLevelLoad;
+        sp1 = (Speed1 * (Mass1 - Mass2) + 2 * Mass2 * Speed2) / (Mass1 + Mass2);
+        sp2 = (Speed2 * (Mass2 - Mass1) + 2 * Mass1 * Speed1) / (Mass1 + Mass2);
+        if (XXX != 0)
+        {
+            XPosObj1_1 = Obj11.transform.position.x;
+            XPosObj2_1 = Obj2.transform.position.x;
+            Obj11.transform.position = new Vector3(XPosObj1 + Speed1 * time, YPosObj1, ZPosObj1);
+            Obj2.transform.position = new Vector3(XPosObj2 + Speed2 * time, YPosObj2, ZPosObj2);
+        }
+        if (XXX == 0)
+        {
+            Obj11.transform.position = new Vector3(XPosObj1_1 + sp1 * time, YPosObj1, ZPosObj1);
+            Obj2.transform.position = new Vector3(XPosObj2_1 + sp2 * time, YPosObj2, ZPosObj2);
+            //Obj11.transform.Translate(Vector3.right * sp1 / 500);
+        }
+    }
+    void OnCollisionEnter()
+    {
+        XXX = 0;
+    }
+}
