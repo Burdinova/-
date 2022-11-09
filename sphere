@@ -1,45 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class zadacha1 : MonoBehaviour
+public class napiat : MonoBehaviour
 {
     public GameObject Obj1;
     public GameObject Obj2;
     public float time, Mass1, Mass2, Speed1, Speed2, sp1, sp2;
-    private float BUM = 1, XPosObj1, YPosObj1, ZPosObj1;
-    private float XPosObj2, YPosObj2, ZPosObj2;
-    private float XPosObj1_1, XPosObj2_1;
+    private Rigidbody _rigidbody1;
+    private Rigidbody _rigidbody2;
+    [SerializeField] private bool isCollisionDetected;
+
     void Start()
     {
-        Obj1.GetComponent<Rigidbody>().mass = Mass1;
-        Obj2.GetComponent<Rigidbody>().mass = Mass2;
-        XPosObj1 = Obj1.transform.position.x;
-        YPosObj1 = Obj1.transform.position.y;
-        ZPosObj1 = Obj1.transform.position.z;
-        XPosObj2 = Obj2.transform.position.x;
-        ZPosObj2 = Obj2.transform.position.z;
-        YPosObj2 = Obj2.transform.position.y;
+        isCollisionDetected = false;
+        _rigidbody1 = Obj1.GetComponent<Rigidbody>();
+        _rigidbody2 = Obj2.GetComponent<Rigidbody>();
+        _rigidbody1.mass = Mass1;
+        _rigidbody2.mass = Mass2;
     }
     void FixedUpdate()
     {
         time += Time.fixedDeltaTime;
-        sp1 = (Speed1 * (Mass1 - Mass2) + 2 * Mass2 * Speed2) / (Mass1 + Mass2);
-        sp2 = (Speed2 * (Mass2 - Mass1) + 2 * Mass1 * Speed1) / (Mass1 + Mass2);
-        if (BUM != 0)
+        if (!isCollisionDetected)
         {
-            XPosObj1_1 = Obj1.transform.position.x;
-            XPosObj2_1 = Obj2.transform.position.x;
-            Obj1.transform.position = new Vector3(XPosObj1 + Speed1 * time, YPosObj1, ZPosObj1);
-            Obj2.transform.position = new Vector3(XPosObj2 + Speed2 * time, YPosObj2, ZPosObj2);
+            _rigidbody1.velocity = new Vector3(Speed1 * time, 0, 0);
+            _rigidbody2.velocity = new Vector3(Speed2 * time, 0, 0);
+            sp1 = (Speed1 * (Mass1 - Mass2) + 2 * Mass2 * Speed2) / (Mass1 + Mass2);
+            sp2 = (Speed2 * (Mass2 - Mass1) + 2 * Mass1 * Speed1) / (Mass1 + Mass2);
         }
-        if (BUM == 0)
+        else
         {
-            Obj1.transform.position = new Vector3(XPosObj1_1 + sp1 * time, YPosObj1, ZPosObj1);
-            Obj2.transform.position = new Vector3(XPosObj2_1 + sp2 * time, YPosObj2, ZPosObj2);
+
+                _rigidbody1.velocity = new Vector3(sp1 * time, _rigidbody1.transform.position.y, _rigidbody1.transform.position.z);
+                _rigidbody2.velocity = new Vector3(sp2 * time, _rigidbody2.transform.position.y, _rigidbody2.transform.position.z);
+
         }
     }
-    void OnCollisionEnter()
+    private void OnCollisionEnter(Collision collision)
     {
-        BUM = 0;
+        if (collision.gameObject.CompareTag("obj2"))
+
+        { isCollisionDetected = true;}
     }
 }
